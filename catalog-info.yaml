@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: GeminiAIJavaApplication
+  annotations:
+    github.com/project-slug: alexstephen-github/GeminiAIJavaApplication
+spec:
+  type: other
+  lifecycle: unknown
