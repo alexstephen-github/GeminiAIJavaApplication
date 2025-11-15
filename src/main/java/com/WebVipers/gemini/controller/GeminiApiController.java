@@ -24,24 +24,22 @@ public class GeminiApiController {
 	private GeminiApiService geminiApiService;
 
 	@PostMapping("/processrequest")
-	public ResponseEntity<HashMap<String, Object>> processImage(@RequestParam("file") MultipartFile file,
-			@RequestParam("prompt") String prompt) {
+	public ResponseEntity<HashMap<String, Object>> processRequest(@RequestParam("prompt") String prompt) {
 		LOG.info("\n\nINSIDE CLASS == GeminiApiController, METHOD == Process File(); ");
 
 		try {
-			String result = geminiApiService.getResponse(file, prompt);
+			String result = geminiApiService.getResponse(prompt);
 
 			if (result != null) {
-				LOG.info("\nImage processed successfully.");
-				LOG.info("\nEXITING METHOD == processImage() OF CLASS == GeminiApiController \n\n");
+				LOG.info("\nRequest processed successfully.");
 				return getResponseFormat(HttpStatus.OK, "Success", result);
 			} else {
-				LOG.info("\nImage processing failed.");
-				LOG.info("\nEXITING METHOD == processImage() OF CLASS == GeminiApiController \n\n");
+				LOG.info("\nRequest processing failed.");
+				LOG.info("\nEXITING METHOD == processRequest() OF CLASS == GeminiApiController \n\n");
 				return getResponseFormat(HttpStatus.INTERNAL_SERVER_ERROR, "Failure", "unable to read data");
 			}
 		} catch (Exception e) {
-			LOG.severe("\nError in processImage() method of GeminiApiController: " + e.getMessage());
+			LOG.severe("\nError in processRequest() method of GeminiApiController: " + e.getMessage());
 			LOG.info("\nEXITING METHOD == processImage() OF CLASS == GeminiApiController \n\n");
 			return getResponseFormat(HttpStatus.INTERNAL_SERVER_ERROR, "Failure", e.getMessage());
 		}
