@@ -7,3 +7,5 @@ metadata:
 spec:
   type: other
   lifecycle: unknown
+  owner: user:guest
+  system: my-system
