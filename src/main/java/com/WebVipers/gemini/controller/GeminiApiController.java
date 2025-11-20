@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.WebVipers.gemini.service.GeminiApiService;
 
@@ -24,12 +23,18 @@ public class GeminiApiController {
 	private GeminiApiService geminiApiService;
 
 	@PostMapping("/processrequest")
-	public ResponseEntity<HashMap<String, Object>> processRequest(@RequestParam("prompt") String prompt) {
-		LOG.info("\n\nINSIDE CLASS == GeminiApiController, METHOD == Process File(); ");
+	public ResponseEntity<HashMap<String, Object>> processRequest(@RequestParam("prompt") String prompt,@RequestParam("agent") String agent) {
+		LOG.info("\n\nINSIDE CLASS == GeminiApiController, METHOD == Process Request(); ");
 
 		try {
-			String result = geminiApiService.getResponse(prompt);
-
+			
+			String result = null;
+			
+			if (agent.equalsIgnoreCase("Scaffold")) {
+			 result = geminiApiService.getScafoldResponse(prompt);
+			}else {
+				result = geminiApiService.getSpecResponse(prompt);
+			}
 			if (result != null) {
 				LOG.info("\nRequest processed successfully.");
 				return getResponseFormat(HttpStatus.OK, "Success", result);
@@ -40,11 +45,11 @@ public class GeminiApiController {
 			}
 		} catch (Exception e) {
 			LOG.severe("\nError in processRequest() method of GeminiApiController: " + e.getMessage());
-			LOG.info("\nEXITING METHOD == processImage() OF CLASS == GeminiApiController \n\n");
+			LOG.info("\nEXITING METHOD == processRequest() OF CLASS == GeminiApiController \n\n");
 			return getResponseFormat(HttpStatus.INTERNAL_SERVER_ERROR, "Failure", e.getMessage());
 		}
 	}
-
+	
 	public ResponseEntity<HashMap<String, Object>> getResponseFormat(HttpStatus status, String message, Object data) {
 		int responseStatus = (status.equals(HttpStatus.OK)) ? 1 : 0;
 

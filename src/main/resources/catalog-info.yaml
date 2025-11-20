@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: GeneratedCode
+  annotations:
+    github.com/project-slug: alexstephen-github/GeneratedCode
+spec:
+  type: other
+  lifecycle: experimental
+  owner: user:guest
+  system: my-system
